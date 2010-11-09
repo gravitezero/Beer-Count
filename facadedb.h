@@ -8,13 +8,18 @@ class FacadeDb
 {
 public:
     FacadeDb();
-    void initializeDb(QSqlDatabase *db);
-    void initializeModel(QSqlTableModel *model);
-    void refreshModel(QSqlTableModel *model);
+    ~FacadeDb();
+
     void addDrinker(QString name, int count);
+    void delDrinker(QModelIndex index);
+    QSqlTableModel *getModel();
 
 private:
-    QSqlDatabase *sqlDb;
+    QSqlDatabase *db;
+    QSqlTableModel *model;
+
+    void initializeModel();
+    void initializeDb();
 };
 
 #endif // DATABASE_H

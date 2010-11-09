@@ -16,17 +16,16 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(FacadeDb *facadeDb, QWidget *parent = 0);
     ~MainWindow();
 
 public slots:
-    void AddDrinker();
+    void addDrinker();
+    void delDrinker();
 
 private:
     Ui::MainWindow *ui;
     FacadeDb *facadeDb;
-    QSqlDatabase *db;
-    QSqlTableModel *model;
 };
 
 #endif // MAINWINDOW_H

@@ -7,32 +7,30 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlDatabase>
 
-void MainWindow::AddDrinker()
+void MainWindow::addDrinker()
 {
     facadeDb->addDrinker(ui->drinkerName->text(), ui->drinkerCount->value());
-    facadeDb->refreshModel(model);
 }
 
-MainWindow::MainWindow(QWidget *parent) :
+void MainWindow::delDrinker()
+{
+    facadeDb->delDrinker(ui->tableView->currentIndex());
+}
+
+MainWindow::MainWindow(FacadeDb *facadeDb, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    facadeDb(new FacadeDb()),
-    db(new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"))),
-    model(new QSqlTableModel())
+    facadeDb(facadeDb)
 {    
     ui->setupUi(this);
-    connect(ui->addDrinkerButton, SIGNAL(clicked()), this, SLOT(AddDrinker()));
+    connect(ui->addDrinkerButton, SIGNAL(clicked()), this, SLOT(addDrinker()));
+    connect(ui->delDrinkerButton, SIGNAL(clicked()), this, SLOT(delDrinker()));
 
-    facadeDb->initializeDb(db);
-    facadeDb->initializeModel(model);
-
-    ui->tableView->setModel(model);
+    ui->tableView->setModel(facadeDb->getModel());
+    ui->tableView->horizontalHeader()->setStretchLastSection(true);
 }
 
 MainWindow::~MainWindow()
 {
-    delete model;
-    delete facadeDb;
-    delete db;
     delete ui;
 }

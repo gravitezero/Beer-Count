@@ -6,11 +6,30 @@
 #include <QtSql>
 #include <QSqlTableModel>
 
-FacadeDb::FacadeDb()
+void FacadeDb::addDrinker(QString name, int count = 0)
 {
+    /*QSqlQuery query;
+    query.exec("insert into beer_count values ('" + name + "', " + QString::number(count) + ");");
+    model->select();*/
+
+    QSqlRecord record = model->record();
+    record.setValue("name", name);
+    record.setValue("count", count);
+
+    model->insertRecord(-1, record);
 }
 
-void FacadeDb::initializeDb(QSqlDatabase *db)
+void FacadeDb::delDrinker(QModelIndex index)
+{
+    model->removeRow(index.row());
+}
+
+QSqlTableModel *FacadeDb::getModel()
+{
+    return model;
+}
+
+void FacadeDb::initializeDb()
 {
     db->setDatabaseName("database");
     db->open();
@@ -19,7 +38,7 @@ void FacadeDb::initializeDb(QSqlDatabase *db)
     query.exec("create table if not exists beer_count ( name TEXT PRIMARY KEY, count INTEGER );");
 }
 
-void FacadeDb::initializeModel(QSqlTableModel *model)
+void FacadeDb::initializeModel()
 {
     model->setTable("beer_count");
     model->setEditStrategy(QSqlTableModel::OnFieldChange);
@@ -29,16 +48,16 @@ void FacadeDb::initializeModel(QSqlTableModel *model)
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Compteur"));
 }
 
-void FacadeDb::refreshModel(QSqlTableModel *model)
+FacadeDb::FacadeDb():
+    db(new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"))),
+    model(new QSqlTableModel())
 {
-    model->select();
+    initializeDb();
+    initializeModel();
 }
 
-void FacadeDb::addDrinker(QString name, int count = 0)
+FacadeDb::~FacadeDb()
 {
-    //QString str = QString("insert into beer_count values ('" + name + "', " + QString::number(count) + ");");
-    //qDebug() << str << endl;
-
-    QSqlQuery query;
-    query.exec("insert into beer_count values ('" + name + "', " + QString::number(count) + ");");
+    delete model;
+    delete db;
 }
