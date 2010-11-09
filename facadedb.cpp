@@ -14,6 +14,9 @@ void FacadeDb::initializeDb(QSqlDatabase *db)
 {
     db->setDatabaseName("database");
     db->open();
+
+    QSqlQuery query;
+    query.exec("create table if not exists beer_count ( name TEXT PRIMARY KEY, count INTEGER );");
 }
 
 void FacadeDb::initializeModel(QSqlTableModel *model)
