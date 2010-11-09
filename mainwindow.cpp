@@ -17,10 +17,15 @@ void MainWindow::GetButtonClicked()
     ui->lcdNumber->display(facade.GetCount());
 }
 
+void MainWindow::AddDrinker()
+{
+    facadeDb->addDrinker(ui->drinkerName->text(), ui->drinkerCount->value());
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    facadeDb(),
+    facadeDb(new FacadeDb()),
     //db(facadeDb->initializeDb()),
     db(new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"))),
     model(new QSqlTableModel())
@@ -28,17 +33,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(BeerButtonClicked()));
     connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(GetButtonClicked()));
+    connect(ui->addDrinkerButton, SIGNAL(clicked()), this, SLOT(AddDrinker()));
 
-    //QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db->setDatabaseName("database");
-    db->open();
-
-    model->setTable("beer_count");
-    model->setEditStrategy(QSqlTableModel::OnFieldChange);
-    model->select();
-
-    model->setHeaderData(0, Qt::Horizontal, QObject::tr("nom"));
-    model->setHeaderData(1, Qt::Horizontal, QObject::tr("count"));
+    facadeDb->initializeDb(db);
+    facadeDb->initializeModel(model);
 
     ui->tableView->setModel(model);
 }

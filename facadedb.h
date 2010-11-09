@@ -8,7 +8,7 @@ class FacadeDb
 {
 public:
     FacadeDb();
-    QSqlDatabase *initializeDb();
+    void initializeDb(QSqlDatabase *db);
     void initializeModel(QSqlTableModel *model);
     void addDrinker(QString name, int count);
 

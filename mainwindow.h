@@ -24,6 +24,7 @@ public:
 public slots:
     void BeerButtonClicked();
     void GetButtonClicked();
+    void AddDrinker();
 
 private:
     Ui::MainWindow *ui;

@@ -123,7 +123,7 @@
      <bool>false</bool>
     </attribute>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="addDrinkerButton">
     <property name="geometry">
      <rect>
       <x>70</x>
@@ -136,7 +136,7 @@
      <string>+</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="drinkerName">
     <property name="geometry">
      <rect>
       <x>90</x>
@@ -146,7 +146,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinBox_2">
+   <widget class="QSpinBox" name="drinkerCount">
     <property name="geometry">
      <rect>
       <x>370</x>

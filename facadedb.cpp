@@ -10,20 +10,14 @@ FacadeDb::FacadeDb()
 {
 }
 
-QSqlDatabase *FacadeDb::initializeDb()
+void FacadeDb::initializeDb(QSqlDatabase *db)
 {
-    sqlDb->setDatabaseName("database");
-    if(!sqlDb->open())
-    {
-        qDebug() << "error : database not opened" << endl;
-    }
+    db->setDatabaseName("database");
+    db->open();
 
     QSqlQuery query;
     query.exec("create table if not exists beer_count ( nom TEXT PRIMARY KEY, count INTEGER );");
-
     query.exec("insert into beer_count values ('Mr. Connard', 5);");
-
-    return sqlDb;
 }
 
 void FacadeDb::initializeModel(QSqlTableModel *model)
@@ -39,5 +33,5 @@ void FacadeDb::initializeModel(QSqlTableModel *model)
 void FacadeDb::addDrinker(QString name, int count = 0)
 {
     QSqlQuery query;
-    query.exec("insert into beer_count values (" + name + ", " + QString(count) + ");");
+    query.exec("insert into beer_count values ('" + name + "', " + QString(count) + ");");
 }
