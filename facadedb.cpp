@@ -1,23 +1,32 @@
-#include "database.h"
+#include "facadedb.h"
+
+#include <QDebug>
 
 #include <QString>
 #include <QtSql>
 #include <QSqlTableModel>
 
-DataBase::DataBase():
-    sqlDb(QSqlDatabase::addDatabase("QSQLITE"))
+FacadeDb::FacadeDb()
 {
-    sqlDb.setDatabaseName("database");
-    sqlDb.open();
 }
 
-void DataBase::initializeDb()
+QSqlDatabase *FacadeDb::initializeDb()
 {
+    sqlDb->setDatabaseName("database");
+    if(!sqlDb->open())
+    {
+        qDebug() << "error : database not opened" << endl;
+    }
+
     QSqlQuery query;
     query.exec("create table if not exists beer_count ( nom TEXT PRIMARY KEY, count INTEGER );");
+
+    query.exec("insert into beer_count values ('Mr. Connard', 5);");
+
+    return sqlDb;
 }
 
-void DataBase::initializeModel(QSqlTableModel *model)
+void FacadeDb::initializeModel(QSqlTableModel *model)
 {
     model->setTable("beer_count");
     model->setEditStrategy(QSqlTableModel::OnFieldChange);
@@ -27,7 +36,7 @@ void DataBase::initializeModel(QSqlTableModel *model)
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Compteur"));
 }
 
-void DataBase::addDrinker(QString name, int count = 0)
+void FacadeDb::addDrinker(QString name, int count = 0)
 {
     QSqlQuery query;
     query.exec("insert into beer_count values (" + name + ", " + QString(count) + ");");

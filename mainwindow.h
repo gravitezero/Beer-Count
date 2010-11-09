@@ -7,7 +7,7 @@
 #include <QtSql/QSqlDatabase>
 
 #include "facade.h"
-#include "database.h"
+#include "facadedb.h"
 
 namespace Ui {
     class MainWindow;
@@ -20,18 +20,17 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    QSqlTableModel *GetModel();
 
 public slots:
     void BeerButtonClicked();
     void GetButtonClicked();
 
 private:
-    void initializeModel();
-
     Ui::MainWindow *ui;
     Facade facade;
-    QSqlTableModel model;
+    FacadeDb *facadeDb;
+    QSqlDatabase *db;
+    QSqlTableModel *model;
 };
 
 #endif // MAINWINDOW_H

@@ -14,11 +14,11 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     beer.cpp \
     facade.cpp \
-    database.cpp
+    facadedb.cpp
 
 HEADERS  += mainwindow.h \
     beer.h \
     facade.h \
-    database.h
+    facadedb.h
 
 FORMS    += mainwindow.ui

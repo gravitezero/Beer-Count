@@ -4,16 +4,16 @@
 #include <QtSql>
 #include <QSqlTableModel>
 
-class DataBase
+class FacadeDb
 {
 public:
-    DataBase();
-    void initializeDb();
+    FacadeDb();
+    QSqlDatabase *initializeDb();
     void initializeModel(QSqlTableModel *model);
     void addDrinker(QString name, int count);
 
 private:
-    QSqlDatabase sqlDb;
+    QSqlDatabase *sqlDb;
 };
 
 #endif // DATABASE_H

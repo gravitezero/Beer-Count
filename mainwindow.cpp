@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "database.h"
+
+#include "facadedb.h"
 
 #include <QDebug>
 #include <QtSql/QSqlQuery>
@@ -16,25 +17,36 @@ void MainWindow::GetButtonClicked()
     ui->lcdNumber->display(facade.GetCount());
 }
 
-QSqlTableModel *MainWindow::GetModel()
-{
-    return &model;
-}
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
+    ui(new Ui::MainWindow),
+    facadeDb(),
+    //db(facadeDb->initializeDb()),
+    db(new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"))),
+    model(new QSqlTableModel())
+{    
     ui->setupUi(this);
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(BeerButtonClicked()));
     connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(GetButtonClicked()));
 
+    //QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db->setDatabaseName("database");
+    db->open();
 
+    model->setTable("beer_count");
+    model->setEditStrategy(QSqlTableModel::OnFieldChange);
+    model->select();
 
-    ui->tableView->setModel(&model);
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("nom"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("count"));
+
+    ui->tableView->setModel(model);
 }
 
 MainWindow::~MainWindow()
 {
+    delete model;
+    delete facadeDb;
+    delete db;
     delete ui;
 }
