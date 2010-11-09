@@ -3,10 +3,8 @@
 
 #include <QMainWindow>
 #include <QSqlTableModel>
-#include <QtSql/QSqlQuery>
 #include <QtSql/QSqlDatabase>
 
-#include "facade.h"
 #include "facadedb.h"
 
 namespace Ui {
@@ -22,13 +20,10 @@ public:
     ~MainWindow();
 
 public slots:
-    void BeerButtonClicked();
-    void GetButtonClicked();
     void AddDrinker();
 
 private:
     Ui::MainWindow *ui;
-    Facade facade;
     FacadeDb *facadeDb;
     QSqlDatabase *db;
     QSqlTableModel *model;

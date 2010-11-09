@@ -10,6 +10,7 @@ public:
     FacadeDb();
     void initializeDb(QSqlDatabase *db);
     void initializeModel(QSqlTableModel *model);
+    void refreshModel(QSqlTableModel *model);
     void addDrinker(QString name, int count);
 
 private:

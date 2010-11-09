@@ -30,8 +30,16 @@ void FacadeDb::initializeModel(QSqlTableModel *model)
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Compteur"));
 }
 
+void FacadeDb::refreshModel(QSqlTableModel *model)
+{
+    model->select();
+}
+
 void FacadeDb::addDrinker(QString name, int count = 0)
 {
+    //QString str = QString("insert into beer_count values ('" + name + "', " + QString::number(count) + ");");
+    //qDebug() << str << endl;
+
     QSqlQuery query;
-    query.exec("insert into beer_count values ('" + name + "', " + QString(count) + ");");
+    query.exec("insert into beer_count values ('" + name + "', " + QString::number(count) + ");");
 }
