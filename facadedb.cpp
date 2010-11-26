@@ -6,15 +6,13 @@
 #include <QtSql>
 #include <QSqlTableModel>
 
-void FacadeDb::addDrinker(QString name, int count = 0)
+void FacadeDb::addDrinker(QString name, int count, int paid)
 {
-    /*QSqlQuery query;
-    query.exec("insert into beer_count values ('" + name + "', " + QString::number(count) + ");");
-    model->select();*/
 
     QSqlRecord record = model->record();
     record.setValue("name", name);
     record.setValue("count", count);
+    record.setValue("paid", paid);
 
     model->insertRecord(-1, record);
 }
@@ -35,7 +33,8 @@ void FacadeDb::initializeDb()
     db->open();
 
     QSqlQuery query;
-    query.exec("create table if not exists beer_count ( name TEXT PRIMARY KEY, count INTEGER );");
+    query.exec("create table if not exists beer_count ( name TEXT PRIMARY KEY, count INTEGER, paid INTEGER );");
+    qDebug() << query.lastError().text();
 }
 
 void FacadeDb::initializeModel()
@@ -45,7 +44,8 @@ void FacadeDb::initializeModel()
     model->select();
 
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("Nom"));
-    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Compteur"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Consommé"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Payé"));
 }
 
 FacadeDb::FacadeDb():

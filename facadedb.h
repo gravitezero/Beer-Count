@@ -10,7 +10,7 @@ public:
     FacadeDb();
     ~FacadeDb();
 
-    void addDrinker(QString name, int count);
+    void addDrinker(QString name, int count = 0, int paid = 0);
     void delDrinker(QModelIndex index);
     QSqlTableModel *getModel();
 

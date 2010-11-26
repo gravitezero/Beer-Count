@@ -9,7 +9,10 @@
 
 void MainWindow::addDrinker()
 {
-    facadeDb->addDrinker(ui->drinkerName->text(), ui->drinkerCount->value());
+    if(!ui->drinkerName->text().isEmpty())
+    {
+        facadeDb->addDrinker(ui->drinkerName->text(), ui->drinkerCount->value());
+    }
 }
 
 void MainWindow::delDrinker()
@@ -24,6 +27,8 @@ MainWindow::MainWindow(FacadeDb *facadeDb, QWidget *parent) :
 {    
     ui->setupUi(this);
     connect(ui->addDrinkerButton, SIGNAL(clicked()), this, SLOT(addDrinker()));
+    connect(ui->drinkerName, SIGNAL(returnPressed()), this, SLOT(addDrinker()));
+
     connect(ui->delDrinkerButton, SIGNAL(clicked()), this, SLOT(delDrinker()));
 
     ui->tableView->setModel(facadeDb->getModel());
